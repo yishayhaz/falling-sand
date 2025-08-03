@@ -1,9 +1,12 @@
-let canvasWidth = 800;
-let canvasHeight = 600;
-let w = 10;
-let h = 10;
-let rows = canvasHeight / h;
-let cols = canvasWidth / w;
+const canvasWidth = 800;
+const canvasHeight = 600;
+const w = 10;
+const h = 10;
+const rows = canvasHeight / h;
+const cols = canvasWidth / w;
+const brushSize = 4;
+const hueStep = 0.05;
+
 let grid = [];
 let hueVal = 1;
 
@@ -61,10 +64,13 @@ function mouseMoved() {
   const r = floor(mouseX / w);
   const c = floor(mouseY / h);
 
-  loopGrid(createGrid(4, 4), (x, y) => {
-    if (!isEmpty(grid[y + c - 2]?.[x + r - 2])) return;
+  loopGrid(createGrid(brushSize, brushSize), (_x, _y) => {
+    let x = _x + r - brushSize / 2,
+      y = _y + c - brushSize / 2;
 
-    grid[y + c - 2][x + r - 2] = hueVal += 0.05;
+    if (!isEmpty(grid[y]?.[x])) return;
+
+    grid[y][x] = hueVal += hueStep;
 
     hueVal %= 360;
   });
